@@ -17,13 +17,21 @@ class MintTransaction:
     amount: int
     inferredDescription: str
     id: str
+    name: str
+    inferredCategory: dict
 
     @classmethod
     def from_dict(cls, env):
-        return cls(**{
+        print(env.items())
+        items = {
             k: v
             for k, v in env.items() if k in inspect.signature(cls).parameters
-        })
+        }
+        items["id"] = items["inferredCategory"]["id"]
+        items["name"] = items["inferredCategory"]["name"]
+        # print(items)
+
+        return cls(**items)
 
     def asYNAB(self):
         return YNABTransaction(
@@ -31,8 +39,8 @@ class MintTransaction:
                 "date": self.date,
                 "amount": int(self.amount * 1000),
                 "account_id": get_stash().ynab_account_id,
-                "payee_name": self.inferredDescription,
-                "import_id": self.id,
+                "payee_name": self.inferredDescription or "Unknown",
+                "import_id": self.inferredCategory["id"],
             })
 
 

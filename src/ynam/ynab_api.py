@@ -28,7 +28,7 @@ class YNABTransaction:
     cleared: str = 'cleared'
 
     def __post_init__(self) -> None:
-        if len(self.payee_name) >= 100:
+        if len(self.payee_name or "") >= 100:
             shorter_name = self.payee_name[:100]
             logger.debug(
                 f'Payee name "{self.payee_name}" too long. Shortened to "{shorter_name}')
