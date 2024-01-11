@@ -22,14 +22,12 @@ class MintTransaction:
 
     @classmethod
     def from_dict(cls, env):
-        print(env.items())
         items = {
             k: v
             for k, v in env.items() if k in inspect.signature(cls).parameters
         }
         items["id"] = items["inferredCategory"]["id"]
         items["name"] = items["inferredCategory"]["name"]
-        # print(items)
 
         return cls(**items)
 
